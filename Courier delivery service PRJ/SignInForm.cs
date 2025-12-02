@@ -124,6 +124,54 @@ namespace Courier_delivery_service_PRJ
                     }
                 }
             }
+            else if (ChooseComboBox.Text == "Администратор")
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM admin_auth WHERE (admin_name = @l OR admin_phone = @l) AND admin_password = @p";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@l", login);
+                    cmd.Parameters.AddWithValue("@p", password);
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        string query2 = "SELECT is_active FROM admin_auth WHERE (admin_name = @l OR admin_phone = @l) AND admin_password = @p";
+                        string query3 = "SELECT admin_id FROM admin_auth WHERE (admin_name = @l OR admin_phone = @l) AND admin_password = @p";
+                        SqlCommand cmd2 = new SqlCommand(query2, conn);
+                        cmd2.Parameters.AddWithValue("@l", login);
+                        cmd2.Parameters.AddWithValue("@p", password);
+                        int is_active = (int)cmd2.ExecuteScalar();
+                        if (is_active == 0)
+                        {
+                            DialogResult messageBox = MessageBox.Show("Ваш аккаунт заблокирован!", "BAN", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        }
+                        else
+                        {
+                            cmd2 = new SqlCommand(query3, conn);
+                            cmd2.Parameters.AddWithValue("@l", login);
+                            cmd2.Parameters.AddWithValue("@p", password);
+                            AdminForm adminForm = new AdminForm();
+                            adminForm.form1 = form1;
+                            adminForm.admin_id = (int)cmd2.ExecuteScalar();
+
+                            string updateLoginQuery = "UPDATE admin_auth SET last_login = GETDATE() WHERE (admin_name = @l OR admin_phone = @l)";
+                            using (SqlCommand updateCmd = new SqlCommand(updateLoginQuery, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("@l", login);
+                                updateCmd.ExecuteNonQuery();
+                            }
+
+                            adminForm.Show();
+                            this.Hide();
+                        }
+                    }
+                    else
+                    {
+                        DialogResult messageBox = MessageBox.Show("Неверный логин или пароль!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
         }
 
         private void returnBackButton_Click(object sender, EventArgs e)
@@ -135,6 +183,18 @@ namespace Courier_delivery_service_PRJ
         private void SignInForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             form1.Close();
+        }
+
+        private void ChooseComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ChooseComboBox.Text == "Администратор")
+            {
+                adminWarningLabel.Visible = true;
+            }
+            else
+            {
+                adminWarningLabel.Visible = false;
+            }
         }
     }
 }

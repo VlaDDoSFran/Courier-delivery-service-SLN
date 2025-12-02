@@ -37,6 +37,7 @@
             this.ChooseComboBox = new System.Windows.Forms.ComboBox();
             this.ChooseLabel = new System.Windows.Forms.Label();
             this.returnBackButton = new System.Windows.Forms.Button();
+            this.adminWarningLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // EntryLabel
@@ -98,11 +99,13 @@
             this.ChooseComboBox.FormattingEnabled = true;
             this.ChooseComboBox.Items.AddRange(new object[] {
             "Пользователь",
-            "Курьер"});
+            "Курьер",
+            "Администратор"});
             this.ChooseComboBox.Location = new System.Drawing.Point(300, 95);
             this.ChooseComboBox.Name = "ChooseComboBox";
             this.ChooseComboBox.Size = new System.Drawing.Size(175, 21);
             this.ChooseComboBox.TabIndex = 8;
+            this.ChooseComboBox.SelectedIndexChanged += new System.EventHandler(this.ChooseComboBox_SelectedIndexChanged);
             // 
             // ChooseLabel
             // 
@@ -123,11 +126,22 @@
             this.returnBackButton.UseVisualStyleBackColor = true;
             this.returnBackButton.Click += new System.EventHandler(this.returnBackButton_Click);
             // 
+            // adminWarningLabel
+            // 
+            this.adminWarningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.adminWarningLabel.Location = new System.Drawing.Point(481, 95);
+            this.adminWarningLabel.Name = "adminWarningLabel";
+            this.adminWarningLabel.Size = new System.Drawing.Size(311, 35);
+            this.adminWarningLabel.TabIndex = 11;
+            this.adminWarningLabel.Text = "*Чтобы войти в аккаунт администратора, обратитесь к владельцу";
+            this.adminWarningLabel.Visible = false;
+            // 
             // SignInForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 461);
+            this.Controls.Add(this.adminWarningLabel);
             this.Controls.Add(this.returnBackButton);
             this.Controls.Add(this.ChooseLabel);
             this.Controls.Add(this.ChooseComboBox);
@@ -159,5 +173,6 @@
         private System.Windows.Forms.ComboBox ChooseComboBox;
         private System.Windows.Forms.Label ChooseLabel;
         private System.Windows.Forms.Button returnBackButton;
+        private System.Windows.Forms.Label adminWarningLabel;
     }
 }

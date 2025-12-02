@@ -53,7 +53,7 @@ namespace Courier_delivery_service_PRJ
                     {
                         string query2 = "INSERT INTO clients(client_name, client_phone, email) VALUES (@n, @p, @e)";
                         string getId = "SELECT TOP 1 client_id FROM clients ORDER BY client_id DESC";
-                        string query3 = "INSERT INTO client_auth(client_id, client_name, client_phone, client_password, last_login) VALUES (@id, @n, @p, @pw, GETDATE())";
+                        string query3 = "INSERT INTO client_auth(client_id, client_name, client_phone, client_password) VALUES (@id, @n, @p, @pw)";
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@n", login);
                         cmd2.Parameters.AddWithValue("@p", phone);
@@ -90,7 +90,7 @@ namespace Courier_delivery_service_PRJ
                     {
                         string query2 = "INSERT INTO couriers(courier_name, courier_phone, vehicle) VALUES (@n, @p, @v)";
                         string getId = "SELECT TOP 1 courier_id FROM couriers ORDER BY courier_id DESC";
-                        string query3 = "INSERT INTO courier_auth(courier_id, courier_name, courier_phone, courier_password, last_login) VALUES (@id, @n, @p, @pw, GETDATE())";
+                        string query3 = "INSERT INTO courier_auth(courier_id, courier_name, courier_phone, courier_password) VALUES (@id, @n, @p, @pw)";
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@n", login);
                         cmd2.Parameters.AddWithValue("@p", phone);
