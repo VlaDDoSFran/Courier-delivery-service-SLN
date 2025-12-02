@@ -18,18 +18,30 @@ public class AddressService
             {
                 client.Timeout = TimeSpan.FromSeconds(30);
 
-                string[] streetQueries = {
-                "москва ленина", "санкт-петербург невский", "новосибирск советская",
-                "екатеринбург луначарского", "казань баумана", "краснодар красная",
-                "сочи курортный", "воронеж ленина", "самара ленина", "ростов-на-дону садовая"
-            };
+                //string[] streetQueries = {
+                //"москва ленина", "санкт-петербург невский", "новосибирск советская", //-- Я закомментил эти строки,
+                //"екатеринбург луначарского", "казань баумана", "краснодар красная",  //-- чтобы не доставлять заказы по всей России только из Москвы :]
+                //"сочи курортный", "воронеж ленина", "самара ленина", "ростов-на-дону садовая" //-- (предполагается Московская служба доставки)
+                //};
+                string[] moscowQueries =
+                {
+                    "москва ленина", "москва тверская", "москва арбат",
+                "москва садовая", "москва пресненская", "москва новый арбат",
+                "москва кутузовский", "москва ленинский проспект",
+                "москва профсоюзная", "москва киевская"
+                };
 
-                var randomQuery = streetQueries[random.Next(streetQueries.Length)];
+                //var randomQuery = streetQueries[random.Next(streetQueries.Length)];
+                var randomQuery = moscowQueries[random.Next(moscowQueries.Length)];
 
                 var request = new
                 {
                     query = randomQuery,
-                    count = 20
+                    count = 20,
+                    location = new[]
+                    {
+                        new {city = "Москва"}
+                    }
                 };
 
                 var json = JsonConvert.SerializeObject(request);
