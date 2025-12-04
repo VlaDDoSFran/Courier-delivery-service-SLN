@@ -61,7 +61,7 @@
             // 
             // insertButton
             // 
-            this.insertButton.Location = new System.Drawing.Point(12, 437);
+            this.insertButton.Location = new System.Drawing.Point(11, 475);
             this.insertButton.Name = "insertButton";
             this.insertButton.Size = new System.Drawing.Size(140, 70);
             this.insertButton.TabIndex = 2;
@@ -71,7 +71,7 @@
             // 
             // updateButton
             // 
-            this.updateButton.Location = new System.Drawing.Point(158, 437);
+            this.updateButton.Location = new System.Drawing.Point(157, 475);
             this.updateButton.Name = "updateButton";
             this.updateButton.Size = new System.Drawing.Size(140, 70);
             this.updateButton.TabIndex = 3;
@@ -81,7 +81,7 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(304, 437);
+            this.deleteButton.Location = new System.Drawing.Point(303, 475);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(140, 70);
             this.deleteButton.TabIndex = 4;
@@ -97,7 +97,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 58);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(920, 373);
+            this.dataGridView1.Size = new System.Drawing.Size(920, 411);
             this.dataGridView1.TabIndex = 5;
             // 
             // statusLabel

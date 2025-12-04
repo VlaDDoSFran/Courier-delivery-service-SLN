@@ -23,6 +23,16 @@ namespace Courier_delivery_service_PRJ
         private System.Threading.Timer orderGeneratorTimer;
         private AddressService addressService;
 
+        public CourierForm(Form1 form, int courierId)
+        {
+            form1 = form;
+            courier_id = courierId;
+            InitializeComponent();
+            LoadNewOrders();
+
+            addressService = new AddressService();
+            StartOrderGenerator();
+        }
         public CourierForm()
         {
             InitializeComponent();
@@ -31,6 +41,7 @@ namespace Courier_delivery_service_PRJ
             addressService = new AddressService();
             StartOrderGenerator();
         }
+
         private void StartOrderGenerator()
         {
             orderGeneratorTimer = new System.Threading.Timer(

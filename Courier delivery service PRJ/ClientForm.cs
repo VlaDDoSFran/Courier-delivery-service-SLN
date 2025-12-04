@@ -18,6 +18,14 @@ namespace Courier_delivery_service_PRJ
         string connStr = @"Data Source = DESKTOP-O03Q1EM; Initial Catalog=Courier_delivery_service;Integrated Security = True";
         public int client_id { get; set; }
 
+        public ClientForm(Form1 form, int clientId)
+        {
+            form1 = form;
+            client_id = clientId;
+            InitializeComponent();
+            LoadCategoriesToComboBox();
+            LoadProducts();
+        }
         public ClientForm()
         {
             InitializeComponent();

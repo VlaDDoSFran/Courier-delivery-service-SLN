@@ -55,10 +55,8 @@ namespace Courier_delivery_service_PRJ
                             cmd2 = new SqlCommand(query3, conn);
                             cmd2.Parameters.AddWithValue("@l", login);
                             cmd2.Parameters.AddWithValue("@p", password);
-                            ClientForm clientForm = new ClientForm();
-                            clientForm.form1 = form1;
-                            clientForm.client_id = (int)cmd2.ExecuteScalar();
-                            
+                            ClientForm clientForm = new ClientForm(form1, (int)cmd2.ExecuteScalar());
+
                             string updateLoginQuery = "UPDATE client_auth SET last_login = GETDATE() WHERE (client_name = @l OR client_phone = @l)";
                             using (SqlCommand updateCmd = new SqlCommand(updateLoginQuery, conn))
                             {
@@ -103,9 +101,7 @@ namespace Courier_delivery_service_PRJ
                             cmd2 = new SqlCommand(query3, conn);
                             cmd2.Parameters.AddWithValue("@l", login);
                             cmd2.Parameters.AddWithValue("@p", password);
-                            CourierForm courierForm = new CourierForm();
-                            courierForm.form1 = form1;
-                            courierForm.courier_id = (int)cmd2.ExecuteScalar();
+                            CourierForm courierForm = new CourierForm(form1, (int)cmd2.ExecuteScalar());
 
                             string updateLoginQuery = "UPDATE courier_auth SET last_login = GETDATE() WHERE (courier_name = @l OR courier_phone = @l)";
                             using (SqlCommand updateCmd = new SqlCommand(updateLoginQuery, conn))
@@ -151,9 +147,7 @@ namespace Courier_delivery_service_PRJ
                             cmd2 = new SqlCommand(query3, conn);
                             cmd2.Parameters.AddWithValue("@l", login);
                             cmd2.Parameters.AddWithValue("@p", password);
-                            AdminForm adminForm = new AdminForm();
-                            adminForm.form1 = form1;
-                            adminForm.admin_id = (int)cmd2.ExecuteScalar();
+                            AdminForm adminForm = new AdminForm(form1, (int)cmd2.ExecuteScalar());
 
                             string updateLoginQuery = "UPDATE admin_auth SET last_login = GETDATE() WHERE (admin_name = @l OR admin_phone = @l)";
                             using (SqlCommand updateCmd = new SqlCommand(updateLoginQuery, conn))

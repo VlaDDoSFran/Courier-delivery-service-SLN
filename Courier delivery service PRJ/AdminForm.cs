@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace Courier_delivery_service_PRJ
 {
@@ -12,14 +11,88 @@ namespace Courier_delivery_service_PRJ
     {
         public Form1 form1 { get; set; }
         public int admin_id { get; set; }
+        private string admin_name { get; set; }
         private string connStr = @"Data Source = DESKTOP-O03Q1EM; Initial Catalog=Courier_delivery_service;Integrated Security = True";
         private DataTable currentTable;
         private string currentTableName;
 
+        public AdminForm(Form1 form, int adminId)
+        {
+            form1 = form;
+            admin_id = adminId;
+            InitializeComponent();
+
+            LoadAdminInfo();
+            LoadTableNames();
+
+            LogAdminAction("SELECT", "INIT", "Администратор открыл форму управления");
+        }
+
         public AdminForm()
         {
             InitializeComponent();
+
+            LoadAdminInfo();
             LoadTableNames();
+
+            LogAdminAction("SELECT", "INIT", "Администратор открыл форму управления");
+        }
+
+        private void LoadAdminInfo()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    string query = "SELECT admin_name FROM admins WHERE admin_id = @admin_id";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@admin_id", admin_id);
+                        admin_name = cmd.ExecuteScalar()?.ToString() ?? "Unknown";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки информации об администраторе: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                admin_name = "Unknown";
+            }
+        }
+
+        private void LogAdminAction(string action, string data = "", string details = "")
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+
+                    string query = @"
+                        INSERT INTO admin_actions 
+                        (admin_id, admin_name, selected_table, admin_action, action_data, action_date)
+                        VALUES (@adminId, @admin_name, @selected_table, @admin_action, @action_data, GETDATE())";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@adminId", admin_id);
+                        cmd.Parameters.AddWithValue("@admin_name", admin_name);
+                        cmd.Parameters.AddWithValue("@selected_table",
+                            string.IsNullOrEmpty(currentTableName) ? "N/A" : currentTableName);
+                        cmd.Parameters.AddWithValue("@admin_action", action);
+                        cmd.Parameters.AddWithValue("@action_data",
+                            string.IsNullOrEmpty(data) ? details : $"{details} | Данные: {data}");
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка логирования: {ex.Message}");
+            }
         }
 
         private void LoadTableNames()
@@ -33,7 +106,8 @@ namespace Courier_delivery_service_PRJ
                         SELECT TABLE_NAME 
                         FROM INFORMATION_SCHEMA.TABLES 
                         WHERE TABLE_TYPE = 'BASE TABLE'
-                        AND TABLE_NAME <> 'sysdiagrams' AND TABLE_NAME <> 'admin_auth'
+                        AND TABLE_NAME <> 'sysdiagrams'
+                        AND TABLE_NAME <> 'admin_auth'
                         ORDER BY TABLE_NAME";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -50,6 +124,7 @@ namespace Courier_delivery_service_PRJ
             {
                 MessageBox.Show($"Ошибка загрузки таблиц: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogAdminAction("ERROR", "LoadTableNames", $"Ошибка: {ex.Message}");
             }
         }
 
@@ -59,6 +134,8 @@ namespace Courier_delivery_service_PRJ
             {
                 string tableName = tableComboBox.SelectedItem.ToString();
                 LoadTableData(tableName);
+
+                LogAdminAction("SELECT", tableName, "Выбор таблицы для просмотра");
 
                 if (tableName == "admins" || tableName == "admin_actions" || tableName == "admin_auth")
                 {
@@ -118,6 +195,7 @@ namespace Courier_delivery_service_PRJ
             {
                 MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogAdminAction("ERROR", tableName, $"Ошибка загрузки: {ex.Message}");
             }
         }
 
@@ -126,6 +204,7 @@ namespace Courier_delivery_service_PRJ
             if (!string.IsNullOrEmpty(currentTableName))
             {
                 LoadTableData(currentTableName);
+                LogAdminAction("SELECT", currentTableName, "Обновление данных таблицы");
             }
         }
 
@@ -151,7 +230,7 @@ namespace Courier_delivery_service_PRJ
                     {
                         cmd.Parameters.AddWithValue("@TableName", tableName);
 
-                        var identityColumns = new List<string>();
+                        var identityColumns = new System.Collections.Generic.List<string>();
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -171,35 +250,6 @@ namespace Courier_delivery_service_PRJ
                 return table.Columns.Cast<DataColumn>()
                     .Where((c, index) => index > 0)
                     .ToArray();
-            }
-        }
-
-        private string GetPrimaryKeyColumn(string tableName)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connStr))
-                {
-                    conn.Open();
-
-                    string query = @"
-                        SELECT COLUMN_NAME
-                        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-                        WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_SCHEMA + '.' + CONSTRAINT_NAME), 'IsPrimaryKey') = 1
-                        AND TABLE_NAME = @TableName";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@TableName", tableName);
-
-                        object result = cmd.ExecuteScalar();
-                        return result?.ToString() ?? currentTable.Columns[0].ColumnName;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return currentTable.Columns[0].ColumnName;
             }
         }
 
@@ -223,7 +273,8 @@ namespace Courier_delivery_service_PRJ
                     return;
                 }
 
-                string columnTypes = string.Join("\n", columns.Select(c => $"{c.ColumnName} ({GetTypeDescription(c.DataType)})"));
+                string columnsText = string.Join(", ", columns.Select(c => c.ColumnName));
+                string columnTypes = string.Join("\n", columns.Select(c => $"{c.ColumnName} ({c.DataType.Name})"));
 
                 string input = Microsoft.VisualBasic.Interaction.InputBox(
                     $"Введите значения через запятую для колонок:\n\n{columnTypes}\n\nПример: значение1, значение2, ...",
@@ -261,6 +312,9 @@ namespace Courier_delivery_service_PRJ
 
                         int rowsAffected = cmd.ExecuteNonQuery();
 
+                        string insertedData = $"Добавленные значения: {input}";
+                        LogAdminAction("INSERT", currentTableName, insertedData);
+
                         MessageBox.Show($"Добавлено {rowsAffected} записей", "Успех",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -272,6 +326,7 @@ namespace Courier_delivery_service_PRJ
             {
                 MessageBox.Show($"Ошибка при добавлении: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogAdminAction("ERROR", currentTableName, $"Ошибка INSERT: {ex.Message}");
             }
         }
 
@@ -289,13 +344,7 @@ namespace Courier_delivery_service_PRJ
                 else if (dataType == typeof(DateTime))
                     return DateTime.Parse(value);
                 else if (dataType == typeof(bool) || dataType == typeof(Boolean))
-                {
-                    if (value == "1" || value.ToLower() == "true" || value.ToLower() == "да")
-                        return true;
-                    else if (value == "0" || value.ToLower() == "false" || value.ToLower() == "нет")
-                        return false;
                     return bool.Parse(value);
-                }
                 else
                     return value;
             }
@@ -303,20 +352,6 @@ namespace Courier_delivery_service_PRJ
             {
                 return value;
             }
-        }
-
-        private string GetTypeDescription(Type type)
-        {
-            if (type == typeof(int) || type == typeof(Int32))
-                return "целое число";
-            else if (type == typeof(decimal) || type == typeof(Decimal))
-                return "число с запятой";
-            else if (type == typeof(DateTime))
-                return "дата (гггг-мм-дд)";
-            else if (type == typeof(bool) || type == typeof(Boolean))
-                return "да/нет (1/0)";
-            else
-                return "текст";
         }
 
         private void updateButton_Click(object sender, EventArgs e)
@@ -338,11 +373,11 @@ namespace Courier_delivery_service_PRJ
                     DataRowView rowView = (DataRowView)selectedRow.DataBoundItem;
                     DataRow row = rowView.Row;
 
-                    string primaryKeyColumnName = GetPrimaryKeyColumn(currentTableName);
-                    object primaryKeyValue = row[primaryKeyColumnName];
+                    string primaryKeyColumn = GetPrimaryKeyColumn(currentTableName);
+                    object primaryKeyValue = row[primaryKeyColumn];
 
                     var columns = currentTable.Columns.Cast<DataColumn>()
-                        .Where(c => !string.Equals(c.ColumnName, primaryKeyColumnName, StringComparison.OrdinalIgnoreCase))
+                        .Where(c => !string.Equals(c.ColumnName, primaryKeyColumn, StringComparison.OrdinalIgnoreCase))
                         .ToArray();
 
                     if (columns.Length == 0)
@@ -356,13 +391,13 @@ namespace Courier_delivery_service_PRJ
                     foreach (var column in columns)
                     {
                         object value = row[column.ColumnName];
-                        currentValues += $"{column.ColumnName} ({GetTypeDescription(column.DataType)}): {value}\n";
+                        currentValues += $"{column.ColumnName}: {value}\n";
                     }
 
                     string columnsText = string.Join(", ", columns.Select(c => c.ColumnName));
                     string input = Microsoft.VisualBasic.Interaction.InputBox(
-                        $"Текущие значения:\n{currentValues}\n\nВведите новые значения через запятую для колонок:\n{columnsText}",
-                        $"Обновление записи в {currentTableName}", "");
+                        $"Текущие значения:\n{currentValues}\nВведите новые значения через запятую для колонок:\n{columnsText}",
+                        "Обновление записи", "");
 
                     if (string.IsNullOrEmpty(input))
                         return;
@@ -379,7 +414,7 @@ namespace Courier_delivery_service_PRJ
                     string setClause = string.Join(", ",
                         columns.Select(c => $"{c.ColumnName} = @{c.ColumnName}"));
 
-                    string query = $"UPDATE {currentTableName} SET {setClause} WHERE {primaryKeyColumnName} = @pk";
+                    string query = $"UPDATE {currentTableName} SET {setClause} WHERE {primaryKeyColumn} = @pk";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -387,12 +422,14 @@ namespace Courier_delivery_service_PRJ
 
                         for (int i = 0; i < columns.Length; i++)
                         {
-                            string paramName = "@" + columns[i].ColumnName;
-                            object value = string.IsNullOrEmpty(values[i]) ? DBNull.Value : ConvertValue(values[i], columns[i].DataType);
-                            cmd.Parameters.AddWithValue(paramName, value);
+                            cmd.Parameters.AddWithValue("@" + columns[i].ColumnName,
+                                string.IsNullOrEmpty(values[i]) ? DBNull.Value : (object)values[i]);
                         }
 
                         int rowsAffected = cmd.ExecuteNonQuery();
+
+                        string updateData = $"ID: {primaryKeyValue}, Новые значения: {input}";
+                        LogAdminAction("UPDATE", currentTableName, updateData);
 
                         MessageBox.Show($"Обновлено {rowsAffected} записей", "Успех",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -405,6 +442,36 @@ namespace Courier_delivery_service_PRJ
             {
                 MessageBox.Show($"Ошибка при обновлении: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogAdminAction("ERROR", currentTableName, $"Ошибка UPDATE: {ex.Message}");
+            }
+        }
+
+        private string GetPrimaryKeyColumn(string tableName)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+
+                    string query = @"
+                        SELECT COLUMN_NAME
+                        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+                        WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_SCHEMA + '.' + CONSTRAINT_NAME), 'IsPrimaryKey') = 1
+                        AND TABLE_NAME = @TableName";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@TableName", tableName);
+
+                        object result = cmd.ExecuteScalar();
+                        return result?.ToString() ?? currentTable.Columns[0].ColumnName;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return currentTable.Columns[0].ColumnName;
             }
         }
 
@@ -428,23 +495,31 @@ namespace Courier_delivery_service_PRJ
                 {
                     conn.Open();
 
-                    string primaryKeyColumnName = GetPrimaryKeyColumn(currentTableName);
+                    string primaryKeyColumn = GetPrimaryKeyColumn(currentTableName);
                     int deletedCount = 0;
+                    string deletedIds = "";
 
                     foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
                     {
                         DataRowView rowView = (DataRowView)selectedRow.DataBoundItem;
                         DataRow row = rowView.Row;
-                        object primaryKeyValue = row[primaryKeyColumnName];
+                        object primaryKeyValue = row[primaryKeyColumn];
 
-                        string query = $"DELETE FROM {currentTableName} WHERE {primaryKeyColumnName} = @pk";
+                        string query = $"DELETE FROM {currentTableName} WHERE {primaryKeyColumn} = @pk";
 
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             cmd.Parameters.AddWithValue("@pk", primaryKeyValue);
                             deletedCount += cmd.ExecuteNonQuery();
+
+                            if (!string.IsNullOrEmpty(deletedIds))
+                                deletedIds += ", ";
+                            deletedIds += primaryKeyValue.ToString();
                         }
                     }
+
+                    string deleteData = $"Удалено ID: {deletedIds}";
+                    LogAdminAction("DELETE", currentTableName, deleteData);
 
                     MessageBox.Show($"Удалено {deletedCount} записей", "Успех",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -456,16 +531,19 @@ namespace Courier_delivery_service_PRJ
             {
                 MessageBox.Show("Нельзя удалить запись, так как на нее ссылаются другие таблицы",
                     "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogAdminAction("ERROR", currentTableName, $"Ошибка DELETE (547): {ex.Message}");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LogAdminAction("ERROR", currentTableName, $"Ошибка DELETE: {ex.Message}");
             }
         }
 
         private void logoutButton_Click(object sender, EventArgs e)
         {
+            LogAdminAction("LOGOUT", "EXIT", "Выход из системы администратора");
             this.Close();
         }
 
