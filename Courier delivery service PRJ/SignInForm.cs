@@ -39,7 +39,7 @@ namespace Courier_delivery_service_PRJ
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@l", login);
                     cmd.Parameters.AddWithValue("@p", password);
-                    int count = (int)cmd.ExecuteScalar();
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
                     if (count > 0)
                     {
                         string query2 = "SELECT is_active FROM client_auth WHERE (client_name = @l OR client_phone = @l) AND client_password = @p";
@@ -47,7 +47,7 @@ namespace Courier_delivery_service_PRJ
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@l", login);
                         cmd2.Parameters.AddWithValue("@p", password);
-                        int is_active = (int)cmd2.ExecuteScalar();
+                        int is_active = Convert.ToInt32(cmd2.ExecuteScalar());
                         if (is_active == 0)
                         {
                             DialogResult messageBox = MessageBox.Show("Ваш аккаунт заблокирован!", "BAN", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -85,7 +85,7 @@ namespace Courier_delivery_service_PRJ
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@l", login);
                     cmd.Parameters.AddWithValue("@p", password);
-                    int count = (int)cmd.ExecuteScalar();
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
                     if (count > 0)
                     {
                         string query2 = "SELECT is_active FROM courier_auth WHERE (courier_name = @l OR courier_phone = @l) AND courier_password = @p";
@@ -93,7 +93,7 @@ namespace Courier_delivery_service_PRJ
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@l", login);
                         cmd2.Parameters.AddWithValue("@p", password);
-                        int is_active = (int)cmd2.ExecuteScalar();
+                        int is_active = Convert.ToInt32(cmd2.ExecuteScalar());
                         if (is_active == 0)
                         {
                             DialogResult messageBox = MessageBox.Show("Ваш аккаунт заблокирован!", "BAN", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -131,7 +131,7 @@ namespace Courier_delivery_service_PRJ
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@l", login);
                     cmd.Parameters.AddWithValue("@p", password);
-                    int count = (int)cmd.ExecuteScalar();
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
                     if (count > 0)
                     {
                         string query2 = "SELECT is_active FROM admin_auth WHERE (admin_name = @l OR admin_phone = @l) AND admin_password = @p";
@@ -139,7 +139,7 @@ namespace Courier_delivery_service_PRJ
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@l", login);
                         cmd2.Parameters.AddWithValue("@p", password);
-                        int is_active = (int)cmd2.ExecuteScalar();
+                        int is_active = Convert.ToInt32(cmd2.ExecuteScalar());
                         if (is_active == 0)
                         {
                             DialogResult messageBox = MessageBox.Show("Ваш аккаунт заблокирован!", "BAN", MessageBoxButtons.OK, MessageBoxIcon.Stop);

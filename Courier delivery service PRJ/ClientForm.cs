@@ -45,9 +45,26 @@ namespace Courier_delivery_service_PRJ
                 return;
             }
             
-            int productId = (int)button.Tag;
+            int productId = Convert.ToInt32(button.Tag);
             //MessageBox.Show($"Передаем productId: {productId}");
+            decimal price = 0;
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+                string query = @"SELECT price FROM products WHERE product_id = @pId";
+                
+                using(SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@pId", productId);
 
+                    price = Convert.ToDecimal(cmd.ExecuteScalar());
+                }
+            }
+            if (price > balance)
+            {
+                MessageBox.Show("Недостаточно средств.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
             CreateOrder(productId);
         }
 
@@ -355,12 +372,13 @@ namespace Courier_delivery_service_PRJ
 
         private void ClientForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            form1.Close();
+            form1?.Show();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
         {
             this.Close();
+            form1?.Show();
         }
 
         private void workButton_Click(object sender, EventArgs e)
@@ -411,6 +429,13 @@ namespace Courier_delivery_service_PRJ
         private void ClientForm_Load(object sender, EventArgs e)
         {
             updateBalance();
+        }
+
+        private void sendMoneyButton_Click(object sender, EventArgs e)
+        {
+            SendMoneyForm sendMoneyForm = new SendMoneyForm(this, client_id, balance);
+            sendMoneyForm.Show();
+            this.Hide();
         }
     }
 }

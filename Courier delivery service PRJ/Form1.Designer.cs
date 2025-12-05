@@ -31,6 +31,7 @@
             this.SignUpButton = new System.Windows.Forms.Button();
             this.EntryLabel = new System.Windows.Forms.Label();
             this.SignInButton = new System.Windows.Forms.Button();
+            this.exitButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SignUpButton
@@ -64,11 +65,23 @@
             this.SignInButton.UseVisualStyleBackColor = true;
             this.SignInButton.Click += new System.EventHandler(this.SignInButton_Click);
             // 
+            // exitButton
+            // 
+            this.exitButton.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.exitButton.Location = new System.Drawing.Point(276, 348);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(206, 60);
+            this.exitButton.TabIndex = 4;
+            this.exitButton.Text = "Выход";
+            this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 461);
+            this.Controls.Add(this.exitButton);
             this.Controls.Add(this.SignInButton);
             this.Controls.Add(this.EntryLabel);
             this.Controls.Add(this.SignUpButton);
@@ -86,6 +99,7 @@
         private System.Windows.Forms.Button SignUpButton;
         private System.Windows.Forms.Label EntryLabel;
         private System.Windows.Forms.Button SignInButton;
+        private System.Windows.Forms.Button exitButton;
     }
 }
 

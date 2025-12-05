@@ -40,6 +40,7 @@ namespace Courier_delivery_service_PRJ
             this.exitButton = new System.Windows.Forms.Button();
             this.balanceLabel = new System.Windows.Forms.Label();
             this.workButton = new System.Windows.Forms.Button();
+            this.sendMoneyButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -119,19 +120,32 @@ namespace Courier_delivery_service_PRJ
             // 
             this.workButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.workButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.workButton.Location = new System.Drawing.Point(834, 44);
+            this.workButton.Location = new System.Drawing.Point(825, 44);
             this.workButton.Name = "workButton";
-            this.workButton.Size = new System.Drawing.Size(98, 58);
+            this.workButton.Size = new System.Drawing.Size(107, 55);
             this.workButton.TabIndex = 8;
             this.workButton.Text = "Поработать";
             this.workButton.UseVisualStyleBackColor = true;
             this.workButton.Click += new System.EventHandler(this.workButton_Click);
+            // 
+            // sendMoneyButton
+            // 
+            this.sendMoneyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.sendMoneyButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.sendMoneyButton.Location = new System.Drawing.Point(825, 105);
+            this.sendMoneyButton.Name = "sendMoneyButton";
+            this.sendMoneyButton.Size = new System.Drawing.Size(107, 55);
+            this.sendMoneyButton.TabIndex = 12;
+            this.sendMoneyButton.Text = "Перевести деньги";
+            this.sendMoneyButton.UseVisualStyleBackColor = true;
+            this.sendMoneyButton.Click += new System.EventHandler(this.sendMoneyButton_Click);
             // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(944, 631);
+            this.Controls.Add(this.sendMoneyButton);
             this.Controls.Add(this.workButton);
             this.Controls.Add(this.balanceLabel);
             this.Controls.Add(this.exitButton);
@@ -161,5 +175,6 @@ namespace Courier_delivery_service_PRJ
         private Button exitButton;
         private Label balanceLabel;
         private Button workButton;
+        private Button sendMoneyButton;
     }
 }

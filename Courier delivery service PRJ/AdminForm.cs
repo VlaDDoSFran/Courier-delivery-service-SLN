@@ -549,7 +549,7 @@ namespace Courier_delivery_service_PRJ
 
         private void AdminForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            form1?.Close();
+            form1?.Show();
         }
     }
 }

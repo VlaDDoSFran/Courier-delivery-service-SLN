@@ -546,7 +546,7 @@ namespace Courier_delivery_service_PRJ
         private void CourierForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             orderGeneratorTimer?.Dispose();
-            form1.Close();
+            form1?.Show();
         }
 
         public void RefreshOrders()
@@ -557,6 +557,7 @@ namespace Courier_delivery_service_PRJ
         private void exitButton_Click(object sender, EventArgs e)
         {
             this.Close();
+            form1?.Show();
         }
 
         private void refreshOrdersButton_Click(object sender, EventArgs e)
@@ -589,6 +590,13 @@ namespace Courier_delivery_service_PRJ
         private void CourierForm_Load(object sender, EventArgs e)
         {
             updateBalance();
+        }
+
+        private void sendMoneyButton_Click(object sender, EventArgs e)
+        {
+            SendMoneyForm sendMoneyForm = new SendMoneyForm(this, courier_id, balance);
+            sendMoneyForm.Show();
+            this.Hide();
         }
     }
 }
