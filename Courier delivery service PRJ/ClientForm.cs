@@ -400,6 +400,17 @@ namespace Courier_delivery_service_PRJ
 
                     command.ExecuteNonQuery();
                 }
+
+                string query2 = @"INSERT INTO client_transactions (client_id, quantity, notes)
+                VALUES (@ClientId, @quantity, @notes)";
+                using (SqlCommand command = new SqlCommand(query2, conn))
+                {
+                    command.Parameters.AddWithValue("@ClientId", client_id);
+                    command.Parameters.AddWithValue("@quantity", salary);
+                    command.Parameters.AddWithValue("@notes", "Начислена заработная плата");
+
+                    command.ExecuteNonQuery();
+                }
             }
             updateBalance();
         }

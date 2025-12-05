@@ -50,7 +50,7 @@ namespace Courier_delivery_service_PRJ
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@l", login);
                     cmd.Parameters.AddWithValue("@p", phone);
-                    int count = (int)cmd.ExecuteScalar();
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
                     if (count == 0)
                     {
                         string query2 = "INSERT INTO clients(client_name, client_phone, email) VALUES (@n, @p, @e)";
@@ -63,7 +63,7 @@ namespace Courier_delivery_service_PRJ
                         cmd2.Parameters.AddWithValue("@e", emailORvehicle);
                         cmd2.ExecuteNonQuery();
                         SqlCommand cmdGetId = new SqlCommand(getId, conn);
-                        int client_id = (int)cmdGetId.ExecuteScalar();
+                        int client_id = Convert.ToInt32(cmdGetId.ExecuteScalar());
                         SqlCommand cmd3 = new SqlCommand(query3, conn);
                         cmd3.Parameters.AddWithValue("@id", client_id);
                         cmd3.Parameters.AddWithValue("@n", login);
@@ -91,7 +91,7 @@ namespace Courier_delivery_service_PRJ
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@l", login);
                     cmd.Parameters.AddWithValue("@p", phone);
-                    int count = (int)cmd.ExecuteScalar();
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
                     if (count == 0)
                     {
                         string query2 = "INSERT INTO couriers(courier_name, courier_phone, vehicle) VALUES (@n, @p, @v)";
@@ -104,7 +104,7 @@ namespace Courier_delivery_service_PRJ
                         cmd2.Parameters.AddWithValue("@v", emailORvehicle);
                         cmd2.ExecuteNonQuery();
                         SqlCommand cmdGetId = new SqlCommand(getId, conn);
-                        int courier_id = (int)cmdGetId.ExecuteScalar();
+                        int courier_id = Convert.ToInt32(cmdGetId.ExecuteScalar());
                         SqlCommand cmd3 = new SqlCommand(query3, conn);
                         cmd3.Parameters.AddWithValue("@id", courier_id);
                         cmd3.Parameters.AddWithValue("@n", login);
