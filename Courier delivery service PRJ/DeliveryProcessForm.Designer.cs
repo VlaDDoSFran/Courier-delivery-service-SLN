@@ -39,7 +39,6 @@
             this.MinimumSize = new System.Drawing.Size(520, 440);
             this.Name = "DeliveryProcessForm";
             this.Text = "DeliveryProcessForm";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.DeliveryProcessForm_FormClosed);
             this.ResumeLayout(false);
 
         }

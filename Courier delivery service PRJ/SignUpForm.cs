@@ -21,6 +21,8 @@ namespace Courier_delivery_service_PRJ
             EmailORvehicleLabel.Text = "";
             ChooseComboBox.Text = "";
             EmailORvehicleTextBox.Enabled = false;
+            PasswordTextBox.PasswordChar = '*';
+            PasswordTextBox.Multiline = false;
         }
 
         private void returnBackButton_Click(object sender, EventArgs e)
@@ -54,6 +56,7 @@ namespace Courier_delivery_service_PRJ
                         string query2 = "INSERT INTO clients(client_name, client_phone, email) VALUES (@n, @p, @e)";
                         string getId = "SELECT TOP 1 client_id FROM clients ORDER BY client_id DESC";
                         string query3 = "INSERT INTO client_auth(client_id, client_name, client_phone, client_password) VALUES (@id, @n, @p, @pw)";
+                        string queryBal = "INSERT INTO client_balances(client_id) VALUES (@ClientId)";
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@n", login);
                         cmd2.Parameters.AddWithValue("@p", phone);
@@ -66,6 +69,9 @@ namespace Courier_delivery_service_PRJ
                         cmd3.Parameters.AddWithValue("@n", login);
                         cmd3.Parameters.AddWithValue("@p", phone);
                         cmd3.Parameters.AddWithValue("@pw", password);
+                        cmd3.ExecuteNonQuery();
+                        cmd3 = new SqlCommand(queryBal, conn);
+                        cmd3.Parameters.AddWithValue("@ClientId", client_id);
                         cmd3.ExecuteNonQuery();
                         DialogResult messageBox = MessageBox.Show("Вы успешно зарегистрировались!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -91,6 +97,7 @@ namespace Courier_delivery_service_PRJ
                         string query2 = "INSERT INTO couriers(courier_name, courier_phone, vehicle) VALUES (@n, @p, @v)";
                         string getId = "SELECT TOP 1 courier_id FROM couriers ORDER BY courier_id DESC";
                         string query3 = "INSERT INTO courier_auth(courier_id, courier_name, courier_phone, courier_password) VALUES (@id, @n, @p, @pw)";
+                        string queryBal = "INSERT INTO courier_balances(courier_id) VALUES (@CourierId)";
                         SqlCommand cmd2 = new SqlCommand(query2, conn);
                         cmd2.Parameters.AddWithValue("@n", login);
                         cmd2.Parameters.AddWithValue("@p", phone);
@@ -103,6 +110,9 @@ namespace Courier_delivery_service_PRJ
                         cmd3.Parameters.AddWithValue("@n", login);
                         cmd3.Parameters.AddWithValue("@p", phone);
                         cmd3.Parameters.AddWithValue("@pw", password);
+                        cmd3.ExecuteNonQuery();
+                        cmd3 = new SqlCommand(queryBal, conn);
+                        cmd3.Parameters.AddWithValue("@CourierId", courier_id);
                         cmd3.ExecuteNonQuery();
                         DialogResult messageBox = MessageBox.Show("Вы успешно зарегистрировались!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -135,6 +145,17 @@ namespace Courier_delivery_service_PRJ
         private void SignUpForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             form1.Close();
+        }
+
+        private void showPasswordButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            PasswordTextBox.PasswordChar = '\0';
+            PasswordTextBox.Multiline = true;
+        }
+        private void showPasswordButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            PasswordTextBox.PasswordChar = '*';
+            PasswordTextBox.Multiline = false;
         }
     }
 }

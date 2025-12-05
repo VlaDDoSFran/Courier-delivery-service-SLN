@@ -41,6 +41,7 @@
             this.PhoneTextBox = new System.Windows.Forms.TextBox();
             this.EmailORvehicleLabel = new System.Windows.Forms.Label();
             this.EmailORvehicleTextBox = new System.Windows.Forms.TextBox();
+            this.showPasswordButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // EntryLabel
@@ -160,11 +161,23 @@
             this.EmailORvehicleTextBox.Size = new System.Drawing.Size(175, 46);
             this.EmailORvehicleTextBox.TabIndex = 21;
             // 
+            // showPasswordButton
+            // 
+            this.showPasswordButton.Location = new System.Drawing.Point(504, 279);
+            this.showPasswordButton.Name = "showPasswordButton";
+            this.showPasswordButton.Size = new System.Drawing.Size(136, 23);
+            this.showPasswordButton.TabIndex = 23;
+            this.showPasswordButton.Text = "Показать пароль";
+            this.showPasswordButton.UseVisualStyleBackColor = true;
+            this.showPasswordButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.showPasswordButton_MouseDown);
+            this.showPasswordButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.showPasswordButton_MouseUp);
+            // 
             // SignUpForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 461);
+            this.Controls.Add(this.showPasswordButton);
             this.Controls.Add(this.EmailORvehicleLabel);
             this.Controls.Add(this.EmailORvehicleTextBox);
             this.Controls.Add(this.PhoneLabel);
@@ -204,5 +217,6 @@
         private System.Windows.Forms.TextBox PhoneTextBox;
         private System.Windows.Forms.Label EmailORvehicleLabel;
         private System.Windows.Forms.TextBox EmailORvehicleTextBox;
+        private System.Windows.Forms.Button showPasswordButton;
     }
 }

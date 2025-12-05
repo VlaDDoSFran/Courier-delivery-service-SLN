@@ -113,6 +113,12 @@
     <Compile Include="UserOrdersForm.Designer.cs">
       <DependentUpon>UserOrdersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="WorkingProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WorkingProcess.Designer.cs">
+      <DependentUpon>WorkingProcess.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -151,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserOrdersForm.resx">
       <DependentUpon>UserOrdersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WorkingProcess.resx">
+      <DependentUpon>WorkingProcess.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

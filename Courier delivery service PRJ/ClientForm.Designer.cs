@@ -38,6 +38,8 @@ namespace Courier_delivery_service_PRJ
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.exitButton = new System.Windows.Forms.Button();
+            this.balanceLabel = new System.Windows.Forms.Label();
+            this.workButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -88,11 +90,12 @@ namespace Courier_delivery_service_PRJ
             this.flowLayoutPanel.AutoScroll = true;
             this.flowLayoutPanel.Location = new System.Drawing.Point(16, 69);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(630, 550);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(720, 550);
             this.flowLayoutPanel.TabIndex = 5;
             // 
             // exitButton
             // 
+            this.exitButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.exitButton.Location = new System.Drawing.Point(857, 8);
             this.exitButton.Name = "exitButton";
@@ -102,11 +105,35 @@ namespace Courier_delivery_service_PRJ
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
+            // balanceLabel
+            // 
+            this.balanceLabel.AutoSize = true;
+            this.balanceLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.balanceLabel.Location = new System.Drawing.Point(449, 30);
+            this.balanceLabel.Name = "balanceLabel";
+            this.balanceLabel.Size = new System.Drawing.Size(94, 24);
+            this.balanceLabel.TabIndex = 7;
+            this.balanceLabel.Text = "Баланс: 0";
+            // 
+            // workButton
+            // 
+            this.workButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.workButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.workButton.Location = new System.Drawing.Point(834, 44);
+            this.workButton.Name = "workButton";
+            this.workButton.Size = new System.Drawing.Size(98, 58);
+            this.workButton.TabIndex = 8;
+            this.workButton.Text = "Поработать";
+            this.workButton.UseVisualStyleBackColor = true;
+            this.workButton.Click += new System.EventHandler(this.workButton_Click);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(944, 631);
+            this.Controls.Add(this.workButton);
+            this.Controls.Add(this.balanceLabel);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.label2);
@@ -118,6 +145,7 @@ namespace Courier_delivery_service_PRJ
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ClientForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ClientForm_FormClosed);
+            this.Load += new System.EventHandler(this.ClientForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -131,5 +159,7 @@ namespace Courier_delivery_service_PRJ
         private Label label2;
         private FlowLayoutPanel flowLayoutPanel;
         private Button exitButton;
+        private Label balanceLabel;
+        private Button workButton;
     }
 }

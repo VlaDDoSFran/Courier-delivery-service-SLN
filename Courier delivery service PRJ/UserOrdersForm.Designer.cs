@@ -44,7 +44,6 @@ namespace Courier_delivery_service_PRJ
             this.Name = "UserOrdersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Статус доставки";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UserOrdersForm_FormClosed);
             this.ResumeLayout(false);
 
         }

@@ -26,6 +26,8 @@ namespace Courier_delivery_service_PRJ
             CourierId = courierId;
             courierForm = form;
 
+            this.FormClosed += DeliveryProcessForm_FormClosed;
+
             InitializeComponents();
             currentStep = 1;
         }
@@ -176,6 +178,28 @@ namespace Courier_delivery_service_PRJ
             await AddCourierAction("complete_delivery", "Доставка успешно завершена");
             await CreateOrderStatusHistory("delivered");
             await UpdateCourierStatus("free");
+            string query = @"UPDATE courier_balances SET courier_balance = @CourierBalance WHERE courier_id = @CourierId";
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                string query2 = @"SELECT price FROM orders WHERE order_id = @OrderId";
+                decimal order_price = 0;
+                conn.Open();
+
+                using(SqlCommand command = new SqlCommand(query2, conn))
+                {
+                    command.Parameters.AddWithValue("@OrderId", OrderId);
+
+                    order_price = Convert.ToDecimal(await command.ExecuteScalarAsync());
+                }
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@CourierBalance", courierForm.balance + order_price);
+                    command.Parameters.AddWithValue("@CourierId", CourierId);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            courierForm.updateBalance();
         }
 
         private async Task UpdateOrderStatus(string status)
@@ -286,6 +310,11 @@ namespace Courier_delivery_service_PRJ
         private void DeliveryProcessForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             courierForm?.Show();
+        }
+
+        private void DeliveryProcessForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
 }

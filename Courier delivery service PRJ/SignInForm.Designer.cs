@@ -38,6 +38,7 @@
             this.ChooseLabel = new System.Windows.Forms.Label();
             this.returnBackButton = new System.Windows.Forms.Button();
             this.adminWarningLabel = new System.Windows.Forms.Label();
+            this.showPasswordButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // EntryLabel
@@ -136,11 +137,23 @@
             this.adminWarningLabel.Text = "*Чтобы войти в аккаунт администратора, обратитесь к владельцу";
             this.adminWarningLabel.Visible = false;
             // 
+            // showPasswordButton
+            // 
+            this.showPasswordButton.Location = new System.Drawing.Point(481, 210);
+            this.showPasswordButton.Name = "showPasswordButton";
+            this.showPasswordButton.Size = new System.Drawing.Size(136, 23);
+            this.showPasswordButton.TabIndex = 24;
+            this.showPasswordButton.Text = "Показать пароль";
+            this.showPasswordButton.UseVisualStyleBackColor = true;
+            this.showPasswordButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.showPasswordButton_MouseDown);
+            this.showPasswordButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.showPasswordButton_MouseUp);
+            // 
             // SignInForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(804, 461);
+            this.Controls.Add(this.showPasswordButton);
             this.Controls.Add(this.adminWarningLabel);
             this.Controls.Add(this.returnBackButton);
             this.Controls.Add(this.ChooseLabel);
@@ -174,5 +187,6 @@
         private System.Windows.Forms.Label ChooseLabel;
         private System.Windows.Forms.Button returnBackButton;
         private System.Windows.Forms.Label adminWarningLabel;
+        private System.Windows.Forms.Button showPasswordButton;
     }
 }

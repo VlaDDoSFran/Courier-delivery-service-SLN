@@ -38,6 +38,9 @@ namespace Courier_delivery_service_PRJ
             clientForm = clForm;
             method = meth;
 
+            this.FormClosing += UserOrdersForm_FormClosing;
+            this.FormClosed += UserOrdersForm_FormClosed;
+
             InitializeCustomComponents();
 
             orderInfoLabel.Text = $"Заказ №{order_id} • {order_price:C}";
@@ -392,6 +395,19 @@ namespace Courier_delivery_service_PRJ
                         //    MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         CompletePayment();
+                        string query = @"UPDATE client_balances SET client_balance = @ClientBalance WHERE client_id = @ClientId";
+                        using(SqlConnection conn = new SqlConnection(connStr))
+                        {
+                            conn.Open();
+                            using(SqlCommand command = new SqlCommand(query, conn))
+                            {
+                                command.Parameters.AddWithValue("@ClientBalance", clientForm.balance - order_price);
+                                command.Parameters.AddWithValue("@ClientId", client_id);
+
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                        clientForm.updateBalance();
                     }
                     catch (Exception ex)
                     {
@@ -533,6 +549,17 @@ namespace Courier_delivery_service_PRJ
         private void UserOrdersForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             clientForm?.Show();
+        }
+
+        private void UserOrdersForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (animationTimer != null)
+            {
+                animationTimer.Stop();
+                animationTimer.Dispose();
+            }
+
+            animationTimer = null;
         }
     }
 }

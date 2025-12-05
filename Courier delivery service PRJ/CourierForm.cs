@@ -19,6 +19,7 @@ namespace Courier_delivery_service_PRJ
     {
         public Form1 form1 { get; set; }
         public int courier_id { get; set; }
+        public decimal balance = 0;
         private string connStr = @"Data Source = DESKTOP-O03Q1EM; Initial Catalog=Courier_delivery_service;Integrated Security = True";
         private System.Threading.Timer orderGeneratorTimer;
         private AddressService addressService;
@@ -29,6 +30,7 @@ namespace Courier_delivery_service_PRJ
             courier_id = courierId;
             InitializeComponent();
             LoadNewOrders();
+            updateBalance();
 
             addressService = new AddressService();
             StartOrderGenerator();
@@ -37,6 +39,7 @@ namespace Courier_delivery_service_PRJ
         {
             InitializeComponent();
             LoadNewOrders();
+            updateBalance();
 
             addressService = new AddressService();
             StartOrderGenerator();
@@ -387,7 +390,7 @@ namespace Courier_delivery_service_PRJ
 
             Label dateLabel = new Label
             {
-                Text = $"Создан: {Convert.ToDateTime(order["created_date"]):dd.MM.yy HH:mm}",
+                Text = $"Создан: {Convert.ToDateTime(order["created_date"]):dd.MM.yy HH:mm:ss}",
                 Font = new Font("Arial", 8),
                 ForeColor = Color.Gray,
                 Location = new Point(180, 225),
@@ -559,6 +562,33 @@ namespace Courier_delivery_service_PRJ
         private void refreshOrdersButton_Click(object sender, EventArgs e)
         {
             RefreshOrders();
+        }
+
+        public void updateBalance()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connStr))
+                {
+                    connection.Open();
+                    string query = @"SELECT courier_balance FROM courier_balances WHERE courier_id = @CourierId";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CourierId", courier_id);
+                        balance = Convert.ToDecimal(command.ExecuteScalar());
+                    }
+                    balanceLabel.Text = $"Баланс: {balance}";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки баланса: {ex.Message}");
+            }
+        }
+
+        private void CourierForm_Load(object sender, EventArgs e)
+        {
+            updateBalance();
         }
     }
 }

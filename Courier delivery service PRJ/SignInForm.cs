@@ -18,6 +18,8 @@ namespace Courier_delivery_service_PRJ
         public SignInForm()
         {
             InitializeComponent();
+            PasswordTextBox.PasswordChar = '*';
+            PasswordTextBox.Multiline = false;
         }
 
         private void SignInButton_Click(object sender, EventArgs e)
@@ -189,6 +191,18 @@ namespace Courier_delivery_service_PRJ
             {
                 adminWarningLabel.Visible = false;
             }
+        }
+
+        private void showPasswordButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            PasswordTextBox.PasswordChar = '\0';
+            PasswordTextBox.Multiline = true;
+        }
+
+        private void showPasswordButton_MouseUp(object sender, MouseEventArgs e)
+        {
+            PasswordTextBox.PasswordChar = '*';
+            PasswordTextBox.Multiline = false;
         }
     }
 }

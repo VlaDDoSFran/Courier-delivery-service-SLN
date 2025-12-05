@@ -17,6 +17,7 @@ namespace Courier_delivery_service_PRJ
         //public Ordering ordering { get; set; }
         string connStr = @"Data Source = DESKTOP-O03Q1EM; Initial Catalog=Courier_delivery_service;Integrated Security = True";
         public int client_id { get; set; }
+        public decimal balance = 0;
 
         public ClientForm(Form1 form, int clientId)
         {
@@ -25,12 +26,14 @@ namespace Courier_delivery_service_PRJ
             InitializeComponent();
             LoadCategoriesToComboBox();
             LoadProducts();
+            updateBalance();
         }
         public ClientForm()
         {
             InitializeComponent();
             LoadCategoriesToComboBox();
             LoadProducts();
+            updateBalance();
         }
 
         private void OrderButton_Click(object sender, EventArgs e)
@@ -358,6 +361,56 @@ namespace Courier_delivery_service_PRJ
         private void exitButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void workButton_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            WorkingProcess workingProcess = new WorkingProcess(this);
+            workingProcess.Show();
+            this.Hide();
+            string query = @"UPDATE client_balances SET client_balance = @ClientBalance WHERE client_id = @ClientId";
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                double salary = Math.Round(rand.NextDouble() * 20000 + 10000, 2);
+                workingProcess.client_salary = salary;
+                conn.Open();
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@ClientBalance", balance + (decimal)salary);
+                    command.Parameters.AddWithValue("@ClientId", client_id);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            updateBalance();
+        }
+
+        public void updateBalance()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connStr))
+                {
+                    connection.Open();
+                    string query = @"SELECT client_balance FROM client_balances WHERE client_id = @ClientId";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@ClientId", client_id);
+                        balance = Convert.ToDecimal(command.ExecuteScalar());
+                    }
+                    balanceLabel.Text = $"Баланс: {balance}";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки баланса: {ex.Message}");
+            }
+        }
+
+        private void ClientForm_Load(object sender, EventArgs e)
+        {
+            updateBalance();
         }
     }
 }
