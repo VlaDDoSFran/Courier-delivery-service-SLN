@@ -451,8 +451,28 @@ namespace Courier_delivery_service_PRJ
 
         private void supportButton_Click(object sender, EventArgs e)
         {
-            Support support = new Support();
-            support.Show();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connStr))
+                {
+                    connection.Open();
+                    string query = @"INSERT INTO client_actions (client_id, order_id, client_action, details)
+                VALUES (@clId, NULL, 'contact_support', 'Обратился в службу поддержки')";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@clId", client_id);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                Support support = new Support(this);
+                support.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при обращении в службу поддержки: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

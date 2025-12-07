@@ -42,6 +42,7 @@
             this.btnTestAPI = new System.Windows.Forms.Button();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.labelSupportInfo = new System.Windows.Forms.Label();
+            this.exitButton = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.panelChat.SuspendLayout();
             this.panelInput.SuspendLayout();
@@ -138,6 +139,7 @@
             // 
             // panelButtons
             // 
+            this.panelButtons.Controls.Add(this.exitButton);
             this.panelButtons.Controls.Add(this.btnSend);
             this.panelButtons.Controls.Add(this.btnClear);
             this.panelButtons.Controls.Add(this.btnTestAPI);
@@ -202,6 +204,16 @@
     "https://fast-delivery.ru";
             this.labelSupportInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // exitButton
+            // 
+            this.exitButton.Location = new System.Drawing.Point(315, 8);
+            this.exitButton.Margin = new System.Windows.Forms.Padding(2);
+            this.exitButton.Name = "exitButton";
+            this.exitButton.Size = new System.Drawing.Size(135, 41);
+            this.exitButton.TabIndex = 4;
+            this.exitButton.Text = "Выйти";
+            this.exitButton.UseVisualStyleBackColor = true;
+            // 
             // Support
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -217,6 +229,7 @@
             this.Name = "Support";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Поддержка службы доставки";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Support_FormClosed);
             this.Load += new System.EventHandler(this.Support_Load);
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
@@ -244,5 +257,6 @@
         private System.Windows.Forms.Button btnTestAPI;
         private System.Windows.Forms.Panel panelBottom;
         private System.Windows.Forms.Label labelSupportInfo;
+        private System.Windows.Forms.Button exitButton;
     }
 }

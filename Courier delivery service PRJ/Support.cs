@@ -21,13 +21,68 @@ namespace Courier_delivery_service_PRJ
         private string _accessToken = "";
         private DateTime _tokenExpiry = DateTime.MinValue;
         private bool _aiAvailable = false;
+        public Form form;
 
         private const string GIGACHAT_AUTH_URL = "https://ngw.devices.sberbank.ru:9443/api/v2/oauth";
         private const string GIGACHAT_CHAT_URL = "https://gigachat.devices.sberbank.ru/api/v1/chat/completions";
 
+        public Support(Form form)
+        {
+            InitializeComponent();
+
+            if (form is ClientForm)
+            {
+                this.form = (ClientForm)form;
+            }
+            else if (form is CourierForm)
+            {
+                this.form = (CourierForm)form;
+            }
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+            {
+                if (cert.Subject.Contains("sberbank.ru") ||
+                    cert.Subject.Contains("devices.sberbank.ru"))
+                    return true;
+
+                return sslPolicyErrors == SslPolicyErrors.None;
+            };
+
+            _httpClient = new HttpClient(new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+                {
+                    if (cert.Subject.Contains("sberbank.ru") ||
+                        cert.Subject.Contains("devices.sberbank.ru"))
+                        return true;
+
+                    return sslPolicyErrors == SslPolicyErrors.None;
+                }
+            })
+            {
+                Timeout = TimeSpan.FromSeconds(30)
+            };
+
+            SetupUIComponents();
+            AddWelcomeMessage();
+
+            UpdateStatus("Нажмите 'Проверить API' для подключения", Color.White);
+            CheckAPIOnLoad();
+        }
+
         public Support()
         {
             InitializeComponent();
+
+            if (form is ClientForm)
+            {
+                this.form = (ClientForm)form;
+            }
+            else if (form is CourierForm)
+            {
+                this.form = (CourierForm)form;
+            }
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
@@ -118,7 +173,7 @@ namespace Courier_delivery_service_PRJ
             btnSend.Cursor = Cursors.Hand;
             btnSend.Click += btnSend_Click;
 
-            // 3. Кнопка "Очистить чат"
+            // 2. Кнопка "Очистить чат"
             btnClear.BackColor = Color.FromArgb(108, 117, 125);
             btnClear.ForeColor = Color.White;
             btnClear.FlatStyle = FlatStyle.Flat;
@@ -128,7 +183,7 @@ namespace Courier_delivery_service_PRJ
             btnClear.Cursor = Cursors.Hand;
             btnClear.Click += btnClear_Click;
 
-            // 4. Кнопка "Проверить API"
+            // 3. Кнопка "Проверить API"
             btnTestAPI.BackColor = Color.FromArgb(40, 167, 69);
             btnTestAPI.ForeColor = Color.White;
             btnTestAPI.FlatStyle = FlatStyle.Flat;
@@ -137,6 +192,16 @@ namespace Courier_delivery_service_PRJ
             btnTestAPI.Text = "🔍 Проверить API";
             btnTestAPI.Cursor = Cursors.Hand;
             btnTestAPI.Click += btnTestAPI_Click;
+
+            // 4. Кнопка "Выйти"
+            exitButton.BackColor = Color.FromArgb(220, 53, 69);
+            exitButton.ForeColor = Color.White;
+            exitButton.FlatStyle = FlatStyle.Flat;
+            exitButton.FlatAppearance.BorderSize = 0;
+            exitButton.Font = new Font("Segoe UI", 10);
+            exitButton.Text = "🚪 Выйти";
+            exitButton.Cursor = Cursors.Hand;
+            exitButton.Click += exitButton_Click;
         }
 
         private async Task<bool> GetAccessToken()
@@ -574,6 +639,16 @@ namespace Courier_delivery_service_PRJ
             public double temperature { get; set; } = 0.7;
             public int max_tokens { get; set; } = 350;
             public bool stream { get; set; } = false;
+        }
+
+        private void Support_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            form.Show();
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

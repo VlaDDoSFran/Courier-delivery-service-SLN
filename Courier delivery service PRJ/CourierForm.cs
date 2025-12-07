@@ -601,8 +601,28 @@ namespace Courier_delivery_service_PRJ
 
         private void supportButton_Click(object sender, EventArgs e)
         {
-            Support support = new Support();
-            support.Show();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connStr))
+                {
+                    connection.Open();
+                    string query = @"INSERT INTO courier_actions (courier_id, order_id, courier_action, notes)
+                VALUES (@crId, NULL, 'contact_support', 'Обратился в службу поддержки')";
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@crId", courier_id);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                Support support = new Support(this);
+                support.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при обращении в службу поддержки: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
