@@ -39,7 +39,7 @@ namespace Courier_delivery_service_PRJ
 
         private void CourierNotes_FormClosed(object sender, FormClosedEventArgs e)
         {
-            form1.Close();
+            courier?.Show();
         }
     }
 }

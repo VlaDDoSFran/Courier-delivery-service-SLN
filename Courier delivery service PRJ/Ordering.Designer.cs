@@ -171,6 +171,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ordering";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Ordering_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Ordering_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

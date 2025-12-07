@@ -202,5 +202,10 @@ namespace Courier_delivery_service_PRJ
             addressTextBox.Text = "";
             phoneTextBox.Text = "";
         }
+
+        private void Ordering_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            clientForm?.Show();
+        }
     }
 }
