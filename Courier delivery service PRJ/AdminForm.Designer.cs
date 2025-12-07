@@ -36,6 +36,8 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.statusLabel = new System.Windows.Forms.Label();
             this.logoutButton = new System.Windows.Forms.Button();
+            this.SQLTextBox = new System.Windows.Forms.TextBox();
+            this.executeButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,11 +121,31 @@
             this.logoutButton.UseVisualStyleBackColor = true;
             this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
             // 
+            // SQLTextBox
+            // 
+            this.SQLTextBox.Location = new System.Drawing.Point(449, 475);
+            this.SQLTextBox.Multiline = true;
+            this.SQLTextBox.Name = "SQLTextBox";
+            this.SQLTextBox.Size = new System.Drawing.Size(337, 70);
+            this.SQLTextBox.TabIndex = 8;
+            // 
+            // executeButton
+            // 
+            this.executeButton.Location = new System.Drawing.Point(792, 475);
+            this.executeButton.Name = "executeButton";
+            this.executeButton.Size = new System.Drawing.Size(140, 70);
+            this.executeButton.TabIndex = 9;
+            this.executeButton.Text = "Выполнить";
+            this.executeButton.UseVisualStyleBackColor = true;
+            this.executeButton.Click += new System.EventHandler(this.executeButton_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(944, 631);
+            this.Controls.Add(this.executeButton);
+            this.Controls.Add(this.SQLTextBox);
             this.Controls.Add(this.logoutButton);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.dataGridView1);
@@ -154,5 +176,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label statusLabel;
         private System.Windows.Forms.Button logoutButton;
+        private System.Windows.Forms.TextBox SQLTextBox;
+        private System.Windows.Forms.Button executeButton;
     }
 }

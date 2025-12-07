@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Courier_delivery_service_PRJ
 {
@@ -550,6 +551,44 @@ namespace Courier_delivery_service_PRJ
         private void AdminForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             form1?.Show();
+        }
+
+        private void executeButton_Click(object sender, EventArgs e)
+        {
+            dataGridView1.DataSource = null;
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    string query = SQLTextBox.Text;
+                    
+                    if (query.Split(' ')[0].ToLower() == "select")
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(query, conn))
+                        {
+                            currentTable = new DataTable();
+                            adapter.Fill(currentTable);
+
+                            dataGridView1.DataSource = currentTable;
+
+                            statusLabel.Text = $"Пользовательская таблица | Записей: {currentTable.Rows.Count}";
+                        }
+                    }
+                    else
+                    {
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    refreshButton.PerformClick();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка пользовательского запроса: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
