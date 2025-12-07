@@ -35,6 +35,7 @@
             this.QuantityLabel = new System.Windows.Forms.Label();
             this.ChooseLabel = new System.Windows.Forms.Label();
             this.QuantityTextBox = new System.Windows.Forms.TextBox();
+            this.returnBackButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ChooseComboBox
@@ -100,11 +101,23 @@
             this.QuantityTextBox.Size = new System.Drawing.Size(175, 46);
             this.QuantityTextBox.TabIndex = 27;
             // 
+            // returnBackButton
+            // 
+            this.returnBackButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.returnBackButton.Location = new System.Drawing.Point(15, 156);
+            this.returnBackButton.Name = "returnBackButton";
+            this.returnBackButton.Size = new System.Drawing.Size(75, 37);
+            this.returnBackButton.TabIndex = 28;
+            this.returnBackButton.Text = "<";
+            this.returnBackButton.UseVisualStyleBackColor = true;
+            this.returnBackButton.Click += new System.EventHandler(this.returnBackButton_Click);
+            // 
             // SendMoneyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 203);
+            this.Controls.Add(this.returnBackButton);
             this.Controls.Add(this.QuantityTextBox);
             this.Controls.Add(this.LoginLabel);
             this.Controls.Add(this.QuantityLabel);
@@ -130,5 +143,6 @@
         private System.Windows.Forms.Label QuantityLabel;
         private System.Windows.Forms.Label ChooseLabel;
         private System.Windows.Forms.TextBox QuantityTextBox;
+        private System.Windows.Forms.Button returnBackButton;
     }
 }

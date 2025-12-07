@@ -192,7 +192,12 @@ namespace Courier_delivery_service_PRJ
 
         private void SendMoneyForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            form.Close();
+            form.Show();
+        }
+
+        private void returnBackButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
