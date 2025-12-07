@@ -38,6 +38,7 @@
             this.MaximumSize = new System.Drawing.Size(520, 440);
             this.MinimumSize = new System.Drawing.Size(520, 440);
             this.Name = "DeliveryProcessForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DeliveryProcessForm";
             this.ResumeLayout(false);
 

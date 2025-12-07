@@ -598,5 +598,11 @@ namespace Courier_delivery_service_PRJ
             sendMoneyForm.Show();
             this.Hide();
         }
+
+        private void supportButton_Click(object sender, EventArgs e)
+        {
+            Support support = new Support();
+            support.Show();
+        }
     }
 }

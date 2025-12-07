@@ -113,6 +113,7 @@
             this.Controls.Add(this.LoginTextBox);
             this.Controls.Add(this.ChooseComboBox);
             this.Name = "SendMoneyForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SendMoneyForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SendMoneyForm_FormClosed);
             this.ResumeLayout(false);

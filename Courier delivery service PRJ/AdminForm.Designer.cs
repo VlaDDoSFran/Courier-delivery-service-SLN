@@ -135,6 +135,7 @@
             this.MaximumSize = new System.Drawing.Size(960, 670);
             this.MinimumSize = new System.Drawing.Size(960, 670);
             this.Name = "AdminForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdminForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AdminForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

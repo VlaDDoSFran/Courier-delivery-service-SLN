@@ -34,6 +34,7 @@ namespace Courier_delivery_service_PRJ
             this.refreshOrdersButton = new System.Windows.Forms.Button();
             this.balanceLabel = new System.Windows.Forms.Label();
             this.sendMoneyButton = new System.Windows.Forms.Button();
+            this.supportButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // flowLayoutPanelOrders
@@ -94,11 +95,24 @@ namespace Courier_delivery_service_PRJ
             this.sendMoneyButton.UseVisualStyleBackColor = true;
             this.sendMoneyButton.Click += new System.EventHandler(this.sendMoneyButton_Click);
             // 
+            // supportButton
+            // 
+            this.supportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.supportButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.supportButton.Location = new System.Drawing.Point(865, 166);
+            this.supportButton.Name = "supportButton";
+            this.supportButton.Size = new System.Drawing.Size(107, 55);
+            this.supportButton.TabIndex = 13;
+            this.supportButton.Text = "Тех.поддержка";
+            this.supportButton.UseVisualStyleBackColor = true;
+            this.supportButton.Click += new System.EventHandler(this.supportButton_Click);
+            // 
             // CourierForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 631);
+            this.Controls.Add(this.supportButton);
             this.Controls.Add(this.sendMoneyButton);
             this.Controls.Add(this.balanceLabel);
             this.Controls.Add(this.refreshOrdersButton);
@@ -122,5 +136,6 @@ namespace Courier_delivery_service_PRJ
         private Button refreshOrdersButton;
         private Label balanceLabel;
         private Button sendMoneyButton;
+        private Button supportButton;
     }
 }
